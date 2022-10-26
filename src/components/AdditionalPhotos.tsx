@@ -49,6 +49,7 @@ const PriceTag = styled.div`
   line-height: 30px;
   min-width: 60px;
   text-align: center;
+  cursor: pointer;
 `;
 
 const PhotoItem = styled.img`
