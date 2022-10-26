@@ -75,6 +75,11 @@ export function RestaurantInfoCard(props: Props) {
         text="Book a table"
         textColor="white"
         block
+        onClick={() => {
+          if (props.book_url) {
+            window.open(props.book_url, "_blank");
+          }
+        }}
       />
       <div style={{ marginBottom: 62 }} />
     </Container>

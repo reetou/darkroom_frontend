@@ -12,10 +12,16 @@ const Container = styled.div`
   color: white;
 `;
 
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 31px 91px 0 91px;
+  max-width: 1260px;
 `;
 
 const PhotoWrapper = styled.div`
@@ -25,8 +31,11 @@ const PhotoWrapper = styled.div`
 const PhotoContainer = styled.div`
   width: 100%;
   min-height: 60vh;
-  background-color: red;
+  background-color: black;
   margin-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Home: NextPage = () => {
@@ -44,22 +53,27 @@ const Home: NextPage = () => {
       </Head>
       <Container>
         <Navbar backgroundColor="yellow" title={`Dave & Buster's`} logoUrl="" />
-        <Content>
-          <PhotoWrapper>
-            <PhotoContainer></PhotoContainer>
-            <RestaurantInfoCard
-              address="Some address"
-              address_city="New York"
-              name={`Dave & Buster's`}
-              phone="+1 12313123123"
+        <ContentContainer>
+          <Content>
+            <PhotoWrapper>
+              <PhotoContainer>
+                <img style={{ height: "inherit" }} src={photo.url} />
+              </PhotoContainer>
+              <RestaurantInfoCard
+                address="Some address"
+                address_city="New York"
+                name={`Dave & Buster's`}
+                phone="+1 12313123123"
+                book_url="https://google.com"
+              />
+            </PhotoWrapper>
+            <AdditionalPhotos
+              photos={[photo, photo, photo, photo, photo, photo]}
+              selected={[]}
+              onSelect={() => {}}
             />
-          </PhotoWrapper>
-          <AdditionalPhotos
-            photos={[photo, photo, photo, photo, photo, photo]}
-            selected={[]}
-            onSelect={() => {}}
-          />
-        </Content>
+          </Content>
+        </ContentContainer>
       </Container>
     </div>
   );

@@ -17,7 +17,7 @@ const Container = styled.div`
 const PhotosContainer = styled.div`
   margin-top: 24px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr) 0.75fr;
+  grid-template-columns: repeat(4, 1fr) 0.5fr;
   grid-template-rows: 1fr;
   grid-column-gap: 20px;
 `;
@@ -55,6 +55,18 @@ const PhotoItem = styled.img`
   max-height: 170px;
 `;
 
+const OtherPhotosContainer = styled.div`
+  background-color: #141414;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 30px;
+`;
+
 export function AdditionalPhotos(props: Props) {
   return (
     <Container>
@@ -68,6 +80,11 @@ export function AdditionalPhotos(props: Props) {
             </PriceTag>
           </PhotoItemContainer>
         ))}
+        {props.photos.length > 4 ? (
+          <OtherPhotosContainer>
+            {`+${props.photos.length - 4}`}
+          </OtherPhotosContainer>
+        ) : null}
       </PhotosContainer>
     </Container>
   );
