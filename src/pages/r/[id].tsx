@@ -7,6 +7,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styled from "styled-components";
 import { AdditionalPhotos } from "../../components/AdditionalPhotos";
+import { Button } from "../../components/Button";
 import { Navbar } from "../../components/Navbar";
 import { RestaurantInfoCard } from "../../components/RestaurantInfoCard";
 import { DarkroomPhoto } from "../../types/photo";
@@ -41,6 +42,13 @@ const PhotoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+`;
+
+const DownloadContainer = styled.div`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
 `;
 
 const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
@@ -66,6 +74,14 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
                   style={{ height: "inherit" }}
                   src={props.primary_photo.url}
                 />
+                <DownloadContainer>
+                  <Button
+                    backgroundColor="white"
+                    textColor="black"
+                    borderColor="white"
+                    text="Download"
+                  />
+                </DownloadContainer>
               </PhotoContainer>
               <RestaurantInfoCard
                 address={props.restaurant.address}
