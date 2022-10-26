@@ -1,7 +1,7 @@
 import { transparentize } from "polished";
 
 export const colors = {
-  primary: "rgba(18, 11, 33, 1)",
+  primary: "white",
   secondary: "rgba(0, 0, 0, 0.5)",
   text: "rgba(0, 0, 0, 1)",
   white: "rgba(255, 255, 255, 1)",

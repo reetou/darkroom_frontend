@@ -16,6 +16,7 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
 `;
 
 const Content = styled.div`
@@ -52,27 +53,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
-        <Navbar backgroundColor="yellow" title={`Dave & Buster's`} logoUrl="" />
+        <Navbar backgroundColor="yellow" title={`Darkroom`} logoUrl="" />
         <ContentContainer>
-          <Content>
-            <PhotoWrapper>
-              <PhotoContainer>
-                <img style={{ height: "inherit" }} src={photo.url} />
-              </PhotoContainer>
-              <RestaurantInfoCard
-                address="Some address"
-                address_city="New York"
-                name={`Dave & Buster's`}
-                phone="+1 12313123123"
-                book_url="https://google.com"
-              />
-            </PhotoWrapper>
-            <AdditionalPhotos
-              photos={[photo, photo, photo, photo, photo, photo]}
-              selected={[]}
-              onSelect={() => {}}
-            />
-          </Content>
+          <h1>Restaurant not selected</h1>
         </ContentContainer>
       </Container>
     </div>
