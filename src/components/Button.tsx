@@ -18,6 +18,7 @@ const Container = styled.button<Props>`
   line-height: 38px;
   color: ${({ textColor }) => textColor};
   border: 4px solid ${({ borderColor }) => borderColor};
+  cursor: pointer;
   padding: 12px 18px;
   ${({ block }) =>
     block

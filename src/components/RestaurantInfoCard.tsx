@@ -42,6 +42,8 @@ const ReviewButton = styled.button`
   letter-spacing: 0.03em;
   color: #ffffff;
   padding: 12px 18px;
+  cursor: pointer;
+  border: none;
 `;
 
 const AddressContainer = styled.div`
