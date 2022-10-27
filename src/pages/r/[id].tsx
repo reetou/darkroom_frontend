@@ -5,6 +5,7 @@ import type {
 } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Router from "next/router";
 import styled from "styled-components";
 import { AdditionalPhotos } from "../../components/AdditionalPhotos";
 import { Button } from "../../components/Button";
@@ -38,14 +39,17 @@ const PhotoWrapper = styled.div`
 `;
 
 const PhotoContainer = styled.div`
-  width: 100%;
-  min-height: 60vh;
+  width: 800px;
+  height: 600px;
   background-color: black;
   margin-right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  img {
+    max-height: inherit;
+  }
 `;
 
 const DownloadContainer = styled.div`
@@ -121,6 +125,9 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
               loading={loading}
               onClick={(p) => {
                 setPrimary(p);
+                Router.replace(`/r/${p.id}`, undefined, {
+                  shallow: true,
+                });
               }}
             />
           </Content>
