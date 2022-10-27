@@ -14,6 +14,7 @@ import { DarkroomRestaurant } from "../../types/restaurant";
 import axios from "axios";
 import { useState } from "react";
 import { API_URL, NEXT_API_URL } from "../../constants";
+import Router from "next/router";
 
 const Container = styled.div`
   background-color: black;
@@ -175,6 +176,9 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
               showPrices
               onClick={(p) => {
                 setPrimary(p);
+                Router.replace(`/orders/${p.id}`, undefined, {
+                  shallow: true,
+                });
               }}
             />
           </Content>
