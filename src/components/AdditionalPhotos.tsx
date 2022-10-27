@@ -6,6 +6,8 @@ type Props = {
   photos: DarkroomPhoto[];
   onSelect: (v: DarkroomPhoto) => void;
   selected: DarkroomPhoto[];
+  onClick: (v: DarkroomPhoto) => void;
+  loading: boolean;
 };
 
 const Container = styled.div`
@@ -33,6 +35,7 @@ const PhotoItemContainer = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
+  cursor: pointer;
 `;
 
 const PriceTag = styled.div`
@@ -74,7 +77,15 @@ export function AdditionalPhotos(props: Props) {
       <Title>We have additional photos of you</Title>
       <PhotosContainer>
         {props.photos.slice(0, 4).map((p) => (
-          <PhotoItemContainer key={p.id}>
+          <PhotoItemContainer
+            key={p.id}
+            onClick={() => {
+              if (props.loading) {
+                return;
+              }
+              props.onClick(p);
+            }}
+          >
             <PhotoItem src={p.url} />
             <PriceTag>
               {p.price} {p.currency}

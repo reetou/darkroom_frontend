@@ -12,6 +12,8 @@ import { Navbar } from "../../components/Navbar";
 import { RestaurantInfoCard } from "../../components/RestaurantInfoCard";
 import { DarkroomPhoto } from "../../types/photo";
 import { DarkroomRestaurant } from "../../types/restaurant";
+import axios from "axios";
+import { useState } from "react";
 
 const Container = styled.div`
   background-color: black;
@@ -54,6 +56,23 @@ const DownloadContainer = styled.div`
 const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
   props
 ) => {
+  const [primary, setPrimary] = useState<DarkroomPhoto>(props.primary_photo);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onPay = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        "http://localhost:4000/api/v1/darkroom/stripe/session"
+      );
+      window.location.href = res.data.redirect_url;
+    } catch (e) {
+      console.error("Cannot create stripe session", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <Head>
@@ -70,16 +89,15 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
           <Content>
             <PhotoWrapper>
               <PhotoContainer>
-                <img
-                  style={{ height: "inherit" }}
-                  src={props.primary_photo.url}
-                />
+                <img style={{ height: "inherit" }} src={primary.url} />
                 <DownloadContainer>
                   <Button
                     backgroundColor="white"
                     textColor="black"
                     borderColor="white"
-                    text="Download"
+                    text={`Download for ${primary.price} ${primary.currency}`}
+                    onClick={onPay}
+                    disabled={loading}
                   />
                 </DownloadContainer>
               </PhotoContainer>
@@ -95,6 +113,10 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
               photos={props.photos}
               selected={[]}
               onSelect={() => {}}
+              loading={loading}
+              onClick={(p) => {
+                setPrimary(p);
+              }}
             />
           </Content>
         </ContentContainer>
@@ -120,12 +142,19 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     url: "https://ireland.apollo.olxcdn.com/v1/files/eyJmbiI6InE2ZzRsMTV2a3c2MjEtT1RPTU9UT1BMIiwidyI6W3siZm4iOiJ3ZzRnbnFwNnkxZi1PVE9NT1RPUEwiLCJzIjoiMTYiLCJwIjoiMTAsLTEwIiwiYSI6IjAifV19.u977tyhelM96uofm43cNhBBuAu4dPmPBn3HNLoBT4vA/image;s=1080x720",
     currency: "$",
   };
+
   try {
+    const split = context.req.url?.split("/") ?? [];
+
+    const photo_id = split[split.length - 1];
+
+    const res = await axios.get(`http://localhost:3000/api/photos/${photo_id}`);
+
     return {
       props: {
         restaurant: r,
-        primary_photo: photo,
-        photos: [photo, photo, photo, photo, photo, photo],
+        primary_photo: res.data.primary_photo,
+        photos: res.data.photos,
       },
     };
   } catch (e) {

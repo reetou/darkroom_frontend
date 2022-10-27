@@ -8,6 +8,7 @@ type Props = {
   text: string;
   onClick?: () => void;
   block?: boolean;
+  disabled?: boolean;
 };
 
 const Container = styled.button<Props>`
