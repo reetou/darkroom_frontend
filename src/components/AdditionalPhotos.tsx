@@ -8,6 +8,7 @@ type Props = {
   selected: DarkroomPhoto[];
   onClick: (v: DarkroomPhoto) => void;
   loading: boolean;
+  showPrices?: boolean;
 };
 
 const Container = styled.div`
@@ -87,9 +88,12 @@ export function AdditionalPhotos(props: Props) {
             }}
           >
             <PhotoItem src={p.url} />
-            <PriceTag>
-              {p.price} {p.currency}
-            </PriceTag>
+            {props.showPrices ? (
+              <PriceTag>
+                {p.currency}
+                {p.price}
+              </PriceTag>
+            ) : null}
           </PhotoItemContainer>
         ))}
         {props.photos.length > 4 ? (

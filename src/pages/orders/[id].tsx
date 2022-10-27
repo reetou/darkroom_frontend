@@ -4,7 +4,6 @@ import type {
   NextPage,
 } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styled from "styled-components";
 import { AdditionalPhotos } from "../../components/AdditionalPhotos";
 import { Button } from "../../components/Button";
@@ -49,6 +48,12 @@ const PhotoContainer = styled.div`
 
 const DownloadContainer = styled.div`
   position: absolute;
+  top: 20px;
+  right: 20px;
+`;
+
+const PurchaseContainer = styled.div`
+  position: absolute;
   bottom: 20px;
   right: 20px;
 `;
@@ -73,6 +78,35 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
     }
   };
 
+  const onPayAll = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        `http://localhost:4000/api/v1/darkroom/stripe/session/${props.primary_photo.id}?all=1`
+      );
+      window.location.href = res.data.redirect_url;
+    } catch (e) {
+      console.error("Cannot create stripe session", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  async function downloadImage(photo: DarkroomPhoto) {
+    const image = await fetch(photo.url);
+    const imageBlog = await image.blob();
+    const imageURL = URL.createObjectURL(imageBlog);
+
+    const link = document.createElement("a");
+    link.href = imageURL;
+    link.download = `${photo.id}.jpeg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  const isPurchased = primary.id === props.primary_photo.id;
+
   return (
     <div>
       <Head>
@@ -90,16 +124,37 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
             <PhotoWrapper>
               <PhotoContainer>
                 <img style={{ height: "inherit" }} src={primary.url} />
-                <DownloadContainer>
+                {isPurchased ? (
+                  <DownloadContainer>
+                    {/* <Link href={primary.url} download target="_blank">
+                      Download
+                    </Link> */}
+
+                    <Button
+                      backgroundColor="white"
+                      textColor="black"
+                      borderColor="white"
+                      text="Download"
+                      onClick={() => {
+                        downloadImage(primary);
+                      }}
+                    />
+                  </DownloadContainer>
+                ) : null}
+                <PurchaseContainer>
                   <Button
                     backgroundColor="white"
                     textColor="black"
                     borderColor="white"
-                    text={`Download for ${primary.currency}${primary.price}`}
-                    onClick={onPay}
+                    text={
+                      isPurchased
+                        ? `Get all others for just $10`
+                        : `Download for ${primary.currency}${primary.price}`
+                    }
+                    onClick={isPurchased ? onPayAll : onPay}
                     disabled={loading}
                   />
-                </DownloadContainer>
+                </PurchaseContainer>
               </PhotoContainer>
               <RestaurantInfoCard
                 address={props.restaurant.address}
@@ -113,8 +168,8 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
               photos={props.photos}
               selected={[]}
               onSelect={() => {}}
-              showPrices
               loading={loading}
+              showPrices
               onClick={(p) => {
                 setPrimary(p);
               }}
@@ -147,13 +202,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     const split = context.req.url?.split("/") ?? [];
 
-    const photo_id = split[split.length - 1].split(".")[0];
+    const order_id = split[split.length - 1].split(".")[0];
 
-    const res = await axios.get(`http://localhost:3000/api/photos/${photo_id}`);
+    const res = await axios.get(`http://localhost:3000/api/orders/${order_id}`);
 
     return {
       props: {
-        restaurant: res.data.restaurant,
+        order_id: res.data.order_id,
+        product_type: res.data.product_type,
+        restaurant: r,
         primary_photo: res.data.primary_photo,
         photos: res.data.photos,
       },
@@ -162,6 +219,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     console.error("Could not get data", e);
     return {
       props: {
+        order_id: "1",
+        product_type: "single_photo",
         restaurant: r,
         primary_photo: photo,
         photos: [],

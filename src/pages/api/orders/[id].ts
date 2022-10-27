@@ -12,7 +12,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   const resp = await axios.get(
-    `${API_URL}/api/v1/darkroom/photos/${req.query.id}`
+    `${API_URL}/api/v1/darkroom/orders/${req.query.id}`
   );
 
   res.status(200).json(resp.data);
