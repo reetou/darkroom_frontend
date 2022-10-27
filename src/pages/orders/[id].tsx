@@ -105,7 +105,9 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
     document.body.removeChild(link);
   }
 
-  const isPurchased = primary.id === props.primary_photo.id;
+  const isPurchased =
+    primary.id === props.primary_photo.id ||
+    props.product_type === "all_photos";
 
   return (
     <div>
