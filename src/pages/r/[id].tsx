@@ -78,9 +78,6 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
     }
   };
 
-  console.log("API URL", process.env.NEXT_PUBLIC_API_URL);
-  console.log("NEXT API URL", NEXT_API_URL);
-
   return (
     <div>
       <Head>
