@@ -38,14 +38,17 @@ const PhotoWrapper = styled.div`
 `;
 
 const PhotoContainer = styled.div`
-  width: 100%;
-  min-height: 60vh;
+  width: 800px;
+  height: 600px;
   background-color: black;
   margin-right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  img {
+    max-height: inherit;
+  }
 `;
 
 const DownloadContainer = styled.div`
