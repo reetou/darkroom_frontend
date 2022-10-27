@@ -13,6 +13,7 @@ import { DarkroomPhoto } from "../../types/photo";
 import { DarkroomRestaurant } from "../../types/restaurant";
 import axios from "axios";
 import { useState } from "react";
+import { API_URL, NEXT_API_URL } from "../../constants";
 
 const Container = styled.div`
   background-color: black;
@@ -68,7 +69,7 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://localhost:4000/api/v1/darkroom/stripe/session/${props.primary_photo.id}`
+        `${API_URL}/api/v1/darkroom/stripe/session/${props.primary_photo.id}`
       );
       window.location.href = res.data.redirect_url;
     } catch (e) {
@@ -82,7 +83,7 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
     try {
       setLoading(true);
       const res = await axios.post(
-        `http://localhost:4000/api/v1/darkroom/stripe/session/${props.primary_photo.id}?all=1`
+        `${API_URL}/api/v1/darkroom/stripe/session/${props.primary_photo.id}?all=1`
       );
       window.location.href = res.data.redirect_url;
     } catch (e) {
@@ -206,7 +207,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     const order_id = split[split.length - 1].split(".")[0];
 
-    const res = await axios.get(`http://localhost:3000/api/orders/${order_id}`);
+    const res = await axios.get(`${NEXT_API_URL}/api/orders/${order_id}`);
 
     return {
       props: {
