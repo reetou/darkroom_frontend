@@ -57,7 +57,7 @@ export function RestaurantInfoCard(props: Props) {
   return (
     <Container>
       <Title>{props.name}</Title>
-      <RatingContainer>
+      {/* <RatingContainer>
         <div>4.8</div>
         <div>Star</div>
         <div>Star</div>
@@ -65,7 +65,7 @@ export function RestaurantInfoCard(props: Props) {
         <div>Star</div>
         <div>Star</div>
       </RatingContainer>
-      <ReviewButton>Write a review</ReviewButton>
+      <ReviewButton>Write a review</ReviewButton> */}
       <AddressContainer>
         <div>{props.address}</div>
         <div>{props.address_city}</div>
