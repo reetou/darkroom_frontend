@@ -28,7 +28,7 @@ const PhotosContainer = styled.div<{ showAll: boolean }>`
   @media (min-width: 1024px) {
     display: grid;
     grid-template-columns: ${({ showAll }) =>
-      showAll ? `repeat(5, 1fr)` : "repeat(4, 1fr) 0.5fr"};
+      showAll ? `repeat(4, 1fr)` : "repeat(3, 1fr) 0.5fr"};
     grid-template-rows: 1fr;
     grid-column-gap: 20px;
     grid-row-gap: 12px;
@@ -97,6 +97,8 @@ const OtherPhotosContainer = styled.div`
   }
 `;
 
+const PHOTOS_COUNT = 3;
+
 export function AdditionalPhotos(props: Props) {
   const [showAll, setShowAll] = useState<boolean>(false);
 
@@ -104,32 +106,34 @@ export function AdditionalPhotos(props: Props) {
     <Container>
       <Title>We have additional photos of you</Title>
       <PhotosContainer showAll={showAll}>
-        {(showAll ? props.photos : props.photos.slice(0, 4)).map((p) => (
-          <PhotoItemContainer
-            key={p.id}
-            onClick={() => {
-              if (props.loading) {
-                return;
-              }
-              props.onClick(p);
-            }}
-          >
-            <PhotoItem src={p.url} />
-            {props.showPrices ? (
-              <PriceTag>
-                {p.currency}
-                {p.price}
-              </PriceTag>
-            ) : null}
-          </PhotoItemContainer>
-        ))}
-        {!showAll && props.photos.length > 4 ? (
+        {(showAll ? props.photos : props.photos.slice(0, PHOTOS_COUNT)).map(
+          (p) => (
+            <PhotoItemContainer
+              key={p.id}
+              onClick={() => {
+                if (props.loading) {
+                  return;
+                }
+                props.onClick(p);
+              }}
+            >
+              <PhotoItem src={p.url} />
+              {props.showPrices ? (
+                <PriceTag>
+                  {p.currency}
+                  {p.price}
+                </PriceTag>
+              ) : null}
+            </PhotoItemContainer>
+          )
+        )}
+        {!showAll && props.photos.length > PHOTOS_COUNT ? (
           <OtherPhotosContainer
             onClick={() => {
               setShowAll(true);
             }}
           >
-            {`+${props.photos.length - 4}`}
+            {`+${props.photos.length - PHOTOS_COUNT}`}
           </OtherPhotosContainer>
         ) : null}
       </PhotosContainer>

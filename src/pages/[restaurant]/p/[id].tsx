@@ -17,15 +17,7 @@ import { useState } from "react";
 import { API_URL, NEXT_API_URL } from "../../../constants";
 import { PageContainer } from "../../../components/PageContainer";
 import { PhotoContainer } from "../../../components/PhotoContainer";
-
-const PhotoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: 1024px) {
-    flex-direction: row;
-  }
-`;
+import { PhotoWrapper } from "../../../components/PhotoWrapper";
 
 const DownloadContainer = styled.div`
   position: absolute;

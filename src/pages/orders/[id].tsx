@@ -15,6 +15,8 @@ import axios from "axios";
 import { useState } from "react";
 import { API_URL, NEXT_API_URL } from "../../constants";
 import Router from "next/router";
+import { PhotoWrapper } from "../../components/PhotoWrapper";
+import { PageContainer } from "../../components/PageContainer";
 
 const Container = styled.div`
   background-color: black;
@@ -31,10 +33,6 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1260px;
-`;
-
-const PhotoWrapper = styled.div`
-  display: flex;
 `;
 
 const PhotoContainer = styled.div`
@@ -120,73 +118,64 @@ const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
         <title>{props.restaurant.name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container>
-        <Navbar
-          backgroundColor="yellow"
-          title={props.restaurant.name}
-          logoUrl=""
-        />
-        <ContentContainer>
-          <Content>
-            <PhotoWrapper>
-              <PhotoContainer>
-                <img style={{ height: "inherit" }} src={primary.url} />
-                {isPurchased ? (
-                  <DownloadContainer>
-                    {/* <Link href={primary.url} download target="_blank">
+      <PageContainer navbarTitle={props.restaurant.name}>
+        <PhotoWrapper>
+          <PhotoContainer>
+            <img style={{ height: "inherit" }} src={primary.url} />
+            {isPurchased ? (
+              <DownloadContainer>
+                {/* <Link href={primary.url} download target="_blank">
                       Download
                     </Link> */}
 
-                    <Button
-                      backgroundColor="white"
-                      textColor="black"
-                      borderColor="white"
-                      text="Download"
-                      onClick={() => {
-                        downloadImage(primary);
-                      }}
-                    />
-                  </DownloadContainer>
-                ) : null}
-                <PurchaseContainer>
-                  <Button
-                    backgroundColor="white"
-                    textColor="black"
-                    borderColor="white"
-                    text={
-                      isPurchased
-                        ? `Get all others for just $10`
-                        : `Download for ${primary.currency}${primary.price}`
-                    }
-                    onClick={isPurchased ? onPayAll : onPay}
-                    disabled={loading}
-                  />
-                </PurchaseContainer>
-              </PhotoContainer>
-              <RestaurantInfoCard
-                address={props.restaurant.address}
-                address_city={props.restaurant.address_city}
-                name={props.restaurant.name}
-                phone={props.restaurant.phone}
-                book_url={props.restaurant.book_url}
+                <Button
+                  backgroundColor="white"
+                  textColor="black"
+                  borderColor="white"
+                  text="Download"
+                  onClick={() => {
+                    downloadImage(primary);
+                  }}
+                />
+              </DownloadContainer>
+            ) : null}
+            <PurchaseContainer>
+              <Button
+                backgroundColor="white"
+                textColor="black"
+                borderColor="white"
+                text={
+                  isPurchased
+                    ? `Get all others for just $10`
+                    : `Download for ${primary.currency}${primary.price}`
+                }
+                onClick={isPurchased ? onPayAll : onPay}
+                disabled={loading}
               />
-            </PhotoWrapper>
-            <AdditionalPhotos
-              photos={props.photos}
-              selected={[]}
-              onSelect={() => {}}
-              loading={loading}
-              showPrices
-              onClick={(p) => {
-                setPrimary(p);
-                Router.replace(`/orders/${p.id}`, undefined, {
-                  shallow: true,
-                });
-              }}
-            />
-          </Content>
-        </ContentContainer>
-      </Container>
+            </PurchaseContainer>
+          </PhotoContainer>
+          <RestaurantInfoCard
+            address={props.restaurant.address}
+            address_city={props.restaurant.address_city}
+            name={props.restaurant.name}
+            phone={props.restaurant.phone}
+            book_url={props.restaurant.book_url}
+          />
+        </PhotoWrapper>
+        <AdditionalPhotos
+          photos={props.photos}
+          selected={[]}
+          onSelect={() => {}}
+          loading={loading}
+          showPrices
+          onClick={(p) => {
+            setPrimary(p);
+            Router.replace(`/orders/${p.id}`, undefined, {
+              shallow: true,
+            });
+          }}
+        />
+      </PageContainer>
     </div>
   );
 };
