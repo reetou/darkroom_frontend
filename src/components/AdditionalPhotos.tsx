@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { DarkroomPhoto } from "../types/photo";
 
@@ -37,6 +37,7 @@ const PhotoItemContainer = styled.div`
   justify-content: center;
   position: relative;
   cursor: pointer;
+  margin-top: 12px;
 `;
 
 const PriceTag = styled.div`
@@ -66,6 +67,7 @@ const OtherPhotosContainer = styled.div`
   align-items: center;
   justify-content: center;
   color: white;
+  cursor: pointer;
 
   font-weight: 900;
   font-size: 20px;
@@ -73,11 +75,13 @@ const OtherPhotosContainer = styled.div`
 `;
 
 export function AdditionalPhotos(props: Props) {
+  const [showAll, setShowAll] = useState<boolean>(false);
+
   return (
     <Container>
       <Title>We have additional photos of you</Title>
       <PhotosContainer>
-        {props.photos.slice(0, 4).map((p) => (
+        {(showAll ? props.photos : props.photos.slice(0, 4)).map((p) => (
           <PhotoItemContainer
             key={p.id}
             onClick={() => {
@@ -96,8 +100,12 @@ export function AdditionalPhotos(props: Props) {
             ) : null}
           </PhotoItemContainer>
         ))}
-        {props.photos.length > 4 ? (
-          <OtherPhotosContainer>
+        {!showAll && props.photos.length > 4 ? (
+          <OtherPhotosContainer
+            onClick={() => {
+              setShowAll(true);
+            }}
+          >
             {`+${props.photos.length - 4}`}
           </OtherPhotosContainer>
         ) : null}
