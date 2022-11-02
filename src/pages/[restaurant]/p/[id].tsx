@@ -15,39 +15,15 @@ import { DarkroomRestaurant } from "../../../types/restaurant";
 import axios from "axios";
 import { useState } from "react";
 import { API_URL, NEXT_API_URL } from "../../../constants";
-
-const Container = styled.div`
-  background-color: black;
-  color: white;
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 1260px;
-`;
+import { PageContainer } from "../../../components/PageContainer";
+import { PhotoContainer } from "../../../components/PhotoContainer";
 
 const PhotoWrapper = styled.div`
   display: flex;
-`;
+  flex-direction: column;
 
-const PhotoContainer = styled.div`
-  width: 800px;
-  height: 600px;
-  background-color: black;
-  margin-right: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  img {
-    max-height: inherit;
+  @media (min-width: 1024px) {
+    flex-direction: row;
   }
 `;
 
@@ -83,52 +59,43 @@ const DarkroomPhotoPage: NextPage<
         <title>{props.restaurant.name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container>
-        <Navbar
-          backgroundColor="yellow"
-          title={props.restaurant.name}
-          logoUrl=""
-        />
-        <ContentContainer>
-          <Content>
-            <PhotoWrapper>
-              <PhotoContainer>
-                <img style={{ height: "inherit" }} src={primary.url} />
-                <DownloadContainer>
-                  <Button
-                    backgroundColor="white"
-                    textColor="black"
-                    borderColor="white"
-                    text={`Download for ${primary.currency}${primary.price}`}
-                    onClick={onPay}
-                    disabled={loading}
-                  />
-                </DownloadContainer>
-              </PhotoContainer>
-              <RestaurantInfoCard
-                address={props.restaurant.address}
-                address_city={props.restaurant.address_city}
-                name={props.restaurant.name}
-                phone={props.restaurant.phone}
-                book_url={props.restaurant.book_url}
+      <PageContainer navbarTitle={props.restaurant.name}>
+        <PhotoWrapper>
+          <PhotoContainer>
+            <img style={{ height: "inherit" }} src={primary.url} />
+            <DownloadContainer>
+              <Button
+                backgroundColor="white"
+                textColor="black"
+                borderColor="white"
+                text={`Download for ${primary.currency}${primary.price}`}
+                onClick={onPay}
+                disabled={loading}
               />
-            </PhotoWrapper>
-            <AdditionalPhotos
-              photos={props.photos}
-              selected={[]}
-              onSelect={() => {}}
-              showPrices
-              loading={loading}
-              onClick={(p) => {
-                setPrimary(p);
-                Router.replace(`/r/${p.id}`, undefined, {
-                  shallow: true,
-                });
-              }}
-            />
-          </Content>
-        </ContentContainer>
-      </Container>
+            </DownloadContainer>
+          </PhotoContainer>
+          <RestaurantInfoCard
+            address={props.restaurant.address}
+            address_city={props.restaurant.address_city}
+            name={props.restaurant.name}
+            phone={props.restaurant.phone}
+            book_url={props.restaurant.book_url}
+          />
+        </PhotoWrapper>
+        <AdditionalPhotos
+          photos={props.photos}
+          selected={[]}
+          onSelect={() => {}}
+          showPrices
+          loading={loading}
+          onClick={(p) => {
+            setPrimary(p);
+            Router.replace(`/r/${p.id}`, undefined, {
+              shallow: true,
+            });
+          }}
+        />
+      </PageContainer>
     </div>
   );
 };

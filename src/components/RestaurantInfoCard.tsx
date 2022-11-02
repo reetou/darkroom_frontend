@@ -13,8 +13,11 @@ type Props = {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 254px;
   align-items: flex-start;
+
+  @media (min-width: 1024px) {
+    width: 254px;
+  }
 `;
 
 const Title = styled.div`

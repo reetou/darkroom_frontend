@@ -17,18 +17,33 @@ const Container = styled.div`
   margin-top: 24px;
 `;
 
-const PhotosContainer = styled.div`
+const PhotosContainer = styled.div<{ showAll: boolean }>`
   margin-top: 24px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr) 0.5fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   grid-column-gap: 20px;
+  grid-row-gap: 12px;
+
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: ${({ showAll }) =>
+      showAll ? `repeat(5, 1fr)` : "repeat(4, 1fr) 0.5fr"};
+    grid-template-rows: 1fr;
+    grid-column-gap: 20px;
+    grid-row-gap: 12px;
+  }
 `;
 
 const Title = styled.div`
   font-weight: 900;
   font-size: 20px;
   line-height: 30px;
+  text-align: center;
+
+  @media (min-width: 1024px) {
+    text-align: left;
+  }
 `;
 
 const PhotoItemContainer = styled.div`
@@ -37,7 +52,6 @@ const PhotoItemContainer = styled.div`
   justify-content: center;
   position: relative;
   cursor: pointer;
-  margin-top: 12px;
 `;
 
 const PriceTag = styled.div`
@@ -68,10 +82,19 @@ const OtherPhotosContainer = styled.div`
   justify-content: center;
   color: white;
   cursor: pointer;
+  min-height: 120px;
 
   font-weight: 900;
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 32px;
+  line-height: 48px;
+  border: 2px solid white;
+
+  @media (min-width: 1024px) {
+    border: none;
+    min-height: unset;
+    font-size: 20px;
+    line-height: 30px;
+  }
 `;
 
 export function AdditionalPhotos(props: Props) {
@@ -80,7 +103,7 @@ export function AdditionalPhotos(props: Props) {
   return (
     <Container>
       <Title>We have additional photos of you</Title>
-      <PhotosContainer>
+      <PhotosContainer showAll={showAll}>
         {(showAll ? props.photos : props.photos.slice(0, 4)).map((p) => (
           <PhotoItemContainer
             key={p.id}
